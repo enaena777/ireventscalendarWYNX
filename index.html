@@ -3,123 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2025 Content Calendar</title>
+  <title>2025 Calendar – Innovation Roundtable</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #ff4f2d;
-      --bg: #fdfaf7;
-      --text: #222;
-      --note-bg: #fff;
-      --note-border: #eee;
-      --cyan: #00cfff;
-      --magenta: #ff3cac;
-      --orange: #ffc400;
-    }
-
-    body.dark {
-      --bg: #1a1a1a;
-      --text: #f0f0f0;
-      --note-bg: #2a2a2a;
-      --note-border: #444;
+      --primary: #305bc9;
+      --bg: #f6f9ff;
+      --text: #1f2a40;
+      --note-bg: #ffffff;
+      --note-border: #ccd8ed;
+      --hr-color: #00cfff;
+      --mkt-color: #ff3cac;
+      --inno-color: #ffc400;
     }
 
     body {
       font-family: 'Outfit', sans-serif;
-      background-color: var(--bg);
       margin: 0;
+      background: var(--bg);
       color: var(--text);
-      display: flex;
-    }
-
-    .sidebar-nav {
-      width: 200px;
-      background: #f3efeb;
-      padding: 20px;
-      height: 100vh;
-      overflow-y: auto;
-      position: fixed;
-      top: 0;
-      left: 0;
-    }
-
-    .sidebar-nav h3 {
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-    }
-
-    .sidebar-nav ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .sidebar-nav li {
-      margin: 8px 0;
-    }
-
-    .sidebar-nav a {
-      text-decoration: none;
-      color: #555;
-      font-size: 0.95rem;
-    }
-
-    .main-content {
-      margin-left: 220px;
-      flex: 1;
-      padding: 20px;
     }
 
     header {
+      background: var(--primary);
+      color: white;
       text-align: center;
-      margin-top: 20px;
+      padding: 40px 20px 20px;
     }
 
     header h1 {
-      font-size: 2rem;
-      color: var(--primary);
       margin: 0;
+      font-size: 2.4rem;
     }
 
-    header h2 {
-      font-size: 1.2rem;
+    header p {
       font-weight: 300;
-      margin: 10px 0 20px;
+      margin-top: 8px;
     }
 
-    .theme-toggle {
+    .branding-bar {
+      background-color: #ffffff;
+      padding: 10px 20px;
       text-align: center;
-      margin: 10px;
+      font-weight: 500;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      color: #3d4e70;
     }
 
-    .theme-toggle button {
-      background-color: #ddd;
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: none;
-      cursor: pointer;
-    }
-
-    .dashboard {
-      text-align: center;
-      font-size: 0.95rem;
-      margin-bottom: 20px;
+    .branding-bar span {
+      font-weight: 700;
     }
 
     .calendar {
+      max-width: 1200px;
+      margin: 40px auto;
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 10px;
-      margin-top: 20px;
+      padding: 0 20px;
     }
 
     .day {
       background: var(--note-bg);
       border: 1px solid var(--note-border);
-      border-radius: 6px;
-      min-height: 100px;
-      padding: 6px;
+      border-radius: 10px;
+      padding: 10px;
+      min-height: 120px;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      position: relative;
     }
 
     .day span {
@@ -129,25 +82,28 @@
 
     .note {
       flex-grow: 1;
+      margin-top: 8px;
       border: none;
-      margin-top: 5px;
       resize: none;
+      font-size: 0.85rem;
       background: transparent;
-      color: inherit;
+      color: var(--text);
+      font-family: inherit;
     }
 
-    .highlight-cyan { background-color: #e2faff; }
-    .highlight-magenta { background-color: #ffe3f1; }
-    .highlight-orange { background-color: #fff7de; }
+    .highlight-hr { background-color: #e2faff; }
+    .highlight-marketing { background-color: #ffe3f1; }
+    .highlight-innovation { background-color: #fff7de; }
+
+    .month-label {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin: 40px 20px 10px;
+      text-transform: uppercase;
+      color: #304360;
+    }
 
     @media (max-width: 768px) {
-      .sidebar-nav {
-        display: none;
-      }
-      .main-content {
-        margin-left: 0;
-        padding: 10px;
-      }
       .calendar {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -155,104 +111,72 @@
   </style>
 </head>
 <body>
-  <nav class="sidebar-nav">
-    <h3>Jump to Month</h3>
-    <ul>
-      <li><a href="#jan">January</a></li>
-      <li><a href="#feb">February</a></li>
-      <li><a href="#mar">March</a></li>
-      <li><a href="#apr">April</a></li>
-      <li><a href="#may">May</a></li>
-      <li><a href="#jun">June</a></li>
-      <li><a href="#jul">July</a></li>
-      <li><a href="#aug">August</a></li>
-      <li><a href="#sep">September</a></li>
-      <li><a href="#oct">October</a></li>
-      <li><a href="#nov">November</a></li>
-      <li><a href="#dec">December</a></li>
-    </ul>
-  </nav>
-
-  <div class="main-content">
-    <header>
-      <h1>2025 Content Calendar</h1>
-      <h2>Click a day to write notes. Changes save automatically.</h2>
-    </header>
-
-    <div class="theme-toggle">
-      <button onclick="toggleTheme()">🌓 Toggle Dark Mode</button>
-    </div>
-
-    <div class="dashboard" id="dashboard-summary"></div>
-
-    <div id="calendar"></div>
+  <header>
+    <h1>2025 Events Calendar</h1>
+    <p>Innovation Roundtable | HR Innovation Roundtable | Marketing Innovation Roundtable</p>
+  </header>
+  <div class="branding-bar">
+    Designed for <span>Innovation Roundtable</span> community – HR · Marketing · Innovation teams
   </div>
 
+  <div id="calendar"></div>
+
   <script>
-    const months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const calendar = document.getElementById("calendar");
-    const dashboard = document.getElementById("dashboard-summary");
-    let currentHighlight = "";
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-    function toggleTheme() {
-      document.body.classList.toggle('dark');
-    }
+    const eventsByDate = {
+      '2025-1-23': 'HR: New Year Kickoff Workshop',
+      '2025-2-15': 'Marketing: Campaign Strategy Day',
+      '2025-3-20': 'Innovation: Spring Innovation Lab',
+      '2025-5-12': 'Marketing: Content Planning Summit',
+      '2025-6-4': 'HR: Mid-Year Review Roundtable',
+      '2025-9-9': 'Innovation: Product Innovation Sprint',
+      '2025-10-17': 'HR: Global Collaboration Day',
+      '2025-11-5': 'Marketing: End-of-Year Marketing Sync',
+      '2025-12-10': 'Innovation: Annual Innovation Showcase'
+    };
 
-    const noteCounts = Array(12).fill(0);
+    let highlightMap = {
+      'HR': 'highlight-hr',
+      'Marketing': 'highlight-marketing',
+      'Innovation': 'highlight-innovation'
+    };
 
     for (let m = 0; m < 12; m++) {
-      const section = document.createElement("section");
-      section.id = months[m];
-      const h2 = document.createElement("h2");
-      h2.textContent = monthNames[m];
-      section.appendChild(h2);
-
-      const grid = document.createElement("div");
-      grid.className = "calendar";
+      const label = document.createElement("div");
+      label.className = "month-label";
+      label.textContent = monthNames[m];
+      calendar.appendChild(label);
 
       const daysInMonth = new Date(2025, m + 1, 0).getDate();
+
       for (let d = 1; d <= daysInMonth; d++) {
-        const day = document.createElement("div");
-        day.className = "day";
-        const span = document.createElement("span");
-        span.textContent = `${d}`;
+        const key = `2025-${m + 1}-${d}`;
+        const event = eventsByDate[key];
+        const category = event ? event.split(":")[0] : null;
+
+        const dayBox = document.createElement("div");
+        dayBox.className = "day";
+        if (category && highlightMap[category]) {
+          dayBox.classList.add(highlightMap[category]);
+        }
+
+        const date = document.createElement("span");
+        date.textContent = `${d}`;
 
         const note = document.createElement("textarea");
         note.className = "note";
-        const key = `note-${2025}-${m + 1}-${d}`;
-        note.value = localStorage.getItem(key) || "";
-        if (note.value.trim()) noteCounts[m]++;
-
+        note.value = localStorage.getItem(key) || event || "";
         note.addEventListener("input", () => {
           localStorage.setItem(key, note.value);
         });
 
-        day.addEventListener("click", () => {
-          if (currentHighlight) {
-            day.classList.remove("highlight-cyan", "highlight-magenta", "highlight-orange");
-            day.classList.add(`highlight-${currentHighlight}`);
-          }
-        });
-
-        day.appendChild(span);
-        day.appendChild(note);
-        grid.appendChild(day);
+        dayBox.appendChild(date);
+        dayBox.appendChild(note);
+        calendar.appendChild(dayBox);
       }
-
-      section.appendChild(grid);
-      calendar.appendChild(section);
     }
-
-    function updateDashboard() {
-      let html = "<strong>Notes summary:</strong><br>";
-      noteCounts.forEach((count, i) => {
-        html += `${monthNames[i]}: ${count} notes<br>`;
-      });
-      dashboard.innerHTML = html;
-    }
-
-    updateDashboard();
   </script>
 </body>
 </html>
