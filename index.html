@@ -166,6 +166,7 @@
           const dayDiv = document.createElement('div');
           dayDiv.className = 'day';
           dayDiv.setAttribute('data-month', date.getMonth().toString());
+          dayDiv.setAttribute('data-day', day);
 
           if (date.toDateString() === today) {
             dayDiv.classList.add('today');
@@ -182,8 +183,12 @@
           const savedHighlight = localStorage.getItem(`highlight-${year}-${day}`);
           if (savedHighlight) dayDiv.classList.add(`highlight-${savedHighlight}`);
 
-          dayDiv.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('save-btn') && currentHighlight) {
+          note.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+
+          note.addEventListener('input', () => {
+            if (currentHighlight) {
               dayDiv.classList.remove('highlight-hr', 'highlight-marketing', 'highlight-innovation');
               dayDiv.classList.add(`highlight-${currentHighlight}`);
               localStorage.setItem(`highlight-${year}-${day}`, currentHighlight);
