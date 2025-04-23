@@ -201,7 +201,8 @@
 
         const note = document.createElement("textarea");
         note.className = "note";
-        note.value = localStorage.getItem(key) || (eventsByDate[key] || "");
+        const saved = localStorage.getItem(key);
+        note.value = (saved === null || saved === undefined) ? (eventsByDate[key] || "") : saved;
         note.addEventListener("input", () => {
           localStorage.setItem(key, note.value);
         });
