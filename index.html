@@ -1,68 +1,69 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>IR Calendar — Wynx Vibes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom right, #f6f2ed, #dce4ec);
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #fdf7f2, #e4eff5);
       margin: 0;
       padding: 0;
-      color: #3e3a35;
+      color: #2e2b28;
     }
     header {
-      background-color: #f0e6db;
-      color: #3e3a35;
-      padding: 25px;
+      background-color: #f0eae0;
+      padding: 30px;
       text-align: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      border-bottom: 2px solid #dcd5ca;
     }
     header h1 {
       margin: 0;
-      font-size: 2.4rem;
+      font-size: 2.6rem;
+      color: #463f3a;
+    }
+    header p {
+      font-weight: 300;
     }
     .calendar-controls {
       text-align: center;
-      margin: 25px auto;
+      margin: 20px auto;
     }
-    .calendar-controls button, select {
-      background-color: #b0cde2;
+    .calendar-controls button, .calendar-controls select {
+      background-color: #a6cfe3;
       color: #fff;
       border: none;
-      padding: 10px 18px;
-      margin: 6px;
+      padding: 10px 20px;
+      margin: 8px;
       font-size: 14px;
-      border-radius: 12px;
+      border-radius: 20px;
       cursor: pointer;
-      transition: background-color 0.2s;
+      transition: all 0.2s ease;
     }
     .calendar-controls button:hover {
-      background-color: #9fbfda;
-    }
-    .calendar-controls select, .highlight-select {
-      color: #3e3a35;
-      background-color: #eae7df;
+      background-color: #92bbd3;
     }
     .highlight-select {
-      margin-left: 10px;
+      color: #2e2b28;
+      background-color: #e9e6df;
     }
     .calendar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 18px;
-      padding: 20px;
-      max-width: 1400px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 25px;
+      max-width: 1440px;
       margin: auto;
     }
     .day {
-      background-color: #fefefe;
-      border-radius: 18px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-      padding: 14px;
-      min-height: 150px;
+      background-color: #fff;
+      border-radius: 24px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+      padding: 16px;
+      min-height: 160px;
       position: relative;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
@@ -77,37 +78,40 @@
       width: 100%;
       height: 90px;
       resize: none;
-      border: 1px solid #d3cfc9;
-      border-radius: 10px;
-      padding: 8px;
+      border: 1px solid #ddd3c7;
+      border-radius: 12px;
+      padding: 10px;
       margin-top: 10px;
       font-size: 14px;
-      background-color: #f9f7f4;
+      background-color: #fdfbf9;
       color: #3e3a35;
     }
     .day-number {
       font-weight: bold;
-      color: #6e6a63;
-      font-size: 14px;
+      color: #6a6761;
+      font-size: 15px;
     }
     .save-btn {
       position: absolute;
       bottom: 10px;
       right: 10px;
-      background-color: #82c4a6;
+      background-color: #80c9af;
       color: white;
       border: none;
-      padding: 6px 12px;
+      padding: 6px 14px;
       font-size: 12px;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
     }
     .save-btn:hover {
-      background-color: #70b094;
+      background-color: #6bb69d;
     }
-    .highlight-magenta { background-color: #ffe0f4 !important; }
-    .highlight-cyan { background-color: #e0fbff !important; }
-    .highlight-blue { background-color: #e0ecff !important; }
+    .highlight-magenta { background-color: #ffd3ec !important; }
+    .highlight-cyan { background-color: #d1f8ff !important; }
+    .highlight-blue { background-color: #dce8ff !important; }
+    .highlight-hr { background-color: #d1f8ff !important; }
+    .highlight-marketing { background-color: #ffd3ec !important; }
+    .highlight-innovation { background-color: #dce8ff !important; }
     @media (max-width: 600px) {
       .calendar-controls button, .calendar-controls select {
         display: block;
@@ -120,7 +124,7 @@
 <body>
   <header>
     <h1>IR Calendar — Wynx Vibes</h1>
-    <p>Click any day to write a note. All notes stay saved on your device.</p>
+    <p>Click any day to write a note, assign a category, and highlight by team. All notes are saved on your device.</p>
   </header>
   <div class="calendar-controls">
     <select id="month-select" onchange="filterByMonth()">
@@ -131,9 +135,9 @@
     <button onclick="window.print()">🖨️ Print Calendar</button>
     <select id="highlight-select" class="highlight-select" onchange="setHighlight(this.value)">
       <option value="">Highlight</option>
-      <option value="magenta">Magenta</option>
-      <option value="cyan">Cyan</option>
-      <option value="blue">Blue</option>
+      <option value="hr">HR (Cyan)</option>
+      <option value="marketing">Marketing (Magenta)</option>
+      <option value="innovation">Innovation (Blue)</option>
     </select>
   </div>
   <div class="calendar" id="calendar"></div>
@@ -144,49 +148,63 @@
       const today = new Date().toDateString();
       const monthSelect = document.getElementById('month-select');
       let currentHighlight = '';
+
       const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       months.forEach((month, i) => {
         const option = document.createElement('option');
-        option.value = i;
+        option.value = i.toString();
         option.textContent = month;
         monthSelect.appendChild(option);
       });
+
       function generateCalendar(year) {
         const daysInYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 366 : 365;
         for (let day = 1; day <= daysInYear; day++) {
           const date = new Date(year, 0);
           date.setDate(day);
+
           const dayDiv = document.createElement('div');
           dayDiv.className = 'day';
-          dayDiv.setAttribute('data-month', date.getMonth());
+          dayDiv.setAttribute('data-month', date.getMonth().toString());
+
           if (date.toDateString() === today) {
             dayDiv.classList.add('today');
           }
+
           const dayNumber = document.createElement('div');
           dayNumber.className = 'day-number';
           dayNumber.textContent = date.toDateString();
+
           const note = document.createElement('textarea');
           const savedNote = localStorage.getItem(`note-${year}-${day}`);
           if (savedNote) note.value = savedNote;
+
           const savedHighlight = localStorage.getItem(`highlight-${year}-${day}`);
           if (savedHighlight) dayDiv.classList.add(`highlight-${savedHighlight}`);
-          const saveBtn = document.createElement('button');
-          saveBtn.textContent = 'Save';
-          saveBtn.className = 'save-btn';
-          saveBtn.addEventListener('click', () => {
-            localStorage.setItem(`note-${year}-${day}`, note.value);
-            if (currentHighlight) {
-              dayDiv.classList.remove('highlight-magenta', 'highlight-cyan', 'highlight-blue');
+
+          dayDiv.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('save-btn') && currentHighlight) {
+              dayDiv.classList.remove('highlight-hr', 'highlight-marketing', 'highlight-innovation');
               dayDiv.classList.add(`highlight-${currentHighlight}`);
               localStorage.setItem(`highlight-${year}-${day}`, currentHighlight);
             }
           });
+
+          const saveBtn = document.createElement('button');
+          saveBtn.textContent = 'Save';
+          saveBtn.className = 'save-btn';
+          saveBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            localStorage.setItem(`note-${year}-${day}`, note.value);
+          });
+
           dayDiv.appendChild(dayNumber);
           dayDiv.appendChild(note);
           dayDiv.appendChild(saveBtn);
           calendar.appendChild(dayDiv);
         }
       }
+
       function filterByMonth() {
         const selectedMonth = monthSelect.value;
         const allDays = document.querySelectorAll('.day');
@@ -198,6 +216,7 @@
           }
         });
       }
+
       function clearAllNotes() {
         if (confirm('Are you sure you want to delete all saved notes?')) {
           const keysToDelete = [];
@@ -211,13 +230,13 @@
           window.location.reload();
         }
       }
+
       function downloadNotes() {
         let notesData = '';
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
           if (key.startsWith('note-')) {
-            notesData += `${key}: ${localStorage.getItem(key)}
-`;
+            notesData += `${key}: ${localStorage.getItem(key)}\n`;
           }
         }
         const blob = new Blob([notesData], { type: 'text/plain' });
@@ -226,9 +245,11 @@
         link.download = 'calendar-notes.txt';
         link.click();
       }
+
       function setHighlight(color) {
         currentHighlight = color;
       }
+
       generateCalendar(currentYear);
     });
   </script>
