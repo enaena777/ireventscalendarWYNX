@@ -1,5 +1,4 @@
 <style>
-  /* Add this inside the existing <style> block */
   .calendar {
     box-sizing: border-box;
     display: grid;
@@ -8,11 +7,48 @@
     max-width: 1200px;
     margin: 10px auto 40px;
     padding: 0 16px;
+    scroll-behavior: smooth;
   }
+
   .day {
     min-width: 0;
     word-break: break-word;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .day:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  #scrollToToday {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #d0c3f8;
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 16px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 999;
+    transition: background 0.3s ease;
+  }
+
+  #scrollToToday:hover {
+    background: #b7a7f1;
   }
 </style>
 
-<!-- No other changes needed in structure. This CSS ensures columns stay aligned within container limits -->
+<button id="scrollToToday">Today</button>
+
+<script>
+  document.getElementById("scrollToToday").addEventListener("click", () => {
+    const today = new Date();
+    const selector = `#month-${today.getMonth()}`;
+    const section = document.querySelector(selector);
+    if (section) section.scrollIntoView({ behavior: "smooth" });
+  });
+</script>
