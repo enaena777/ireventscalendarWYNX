@@ -142,121 +142,117 @@
   </div>
   <div class="calendar" id="calendar"></div>
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
+    const currentYear = new Date().getFullYear();
+    const today = new Date().toDateString();
+    const monthSelect = document.getElementById('month-select');
+    let currentHighlight = '';
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    months.forEach((month, i) => {
+      const option = document.createElement('option');
+      option.value = i.toString();
+      option.textContent = month;
+      monthSelect.appendChild(option);
+    });
+
+    function generateCalendar(year) {
       const calendar = document.getElementById('calendar');
-      const currentYear = new Date().getFullYear();
-      const today = new Date().toDateString();
-      const monthSelect = document.getElementById('month-select');
-      let currentHighlight = '';
+      const daysInYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 366 : 365;
+      for (let day = 1; day <= daysInYear; day++) {
+        const date = new Date(year, 0);
+        date.setDate(day);
 
-      const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      months.forEach((month, i) => {
-        const option = document.createElement('option');
-        option.value = i.toString();
-        option.textContent = month;
-        monthSelect.appendChild(option);
-      });
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'day';
+        dayDiv.setAttribute('data-month', date.getMonth().toString());
+        dayDiv.setAttribute('data-day', day);
 
-      function generateCalendar(year) {
-        const daysInYear = (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 366 : 365;
-        for (let day = 1; day <= daysInYear; day++) {
-          const date = new Date(year, 0);
-          date.setDate(day);
-
-          const dayDiv = document.createElement('div');
-          dayDiv.className = 'day';
-          dayDiv.setAttribute('data-month', date.getMonth().toString());
-          dayDiv.setAttribute('data-day', day);
-
-          if (date.toDateString() === today) {
-            dayDiv.classList.add('today');
-          }
-
-          const dayNumber = document.createElement('div');
-          dayNumber.className = 'day-number';
-          dayNumber.textContent = date.toDateString();
-
-          const note = document.createElement('textarea');
-          const savedNote = localStorage.getItem(`note-${year}-${day}`);
-          if (savedNote) note.value = savedNote;
-
-          const savedHighlight = localStorage.getItem(`highlight-${year}-${day}`);
-          if (savedHighlight) dayDiv.classList.add(`highlight-${savedHighlight}`);
-
-          note.addEventListener('click', (e) => {
-            e.stopPropagation();
-          });
-
-          note.addEventListener('input', () => {
-            if (currentHighlight) {
-              dayDiv.classList.remove('highlight-hr', 'highlight-marketing', 'highlight-innovation');
-              dayDiv.classList.add(`highlight-${currentHighlight}`);
-              localStorage.setItem(`highlight-${year}-${day}`, currentHighlight);
-            }
-          });
-
-          const saveBtn = document.createElement('button');
-          saveBtn.textContent = 'Save';
-          saveBtn.className = 'save-btn';
-          saveBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            localStorage.setItem(`note-${year}-${day}`, note.value);
-          });
-
-          dayDiv.appendChild(dayNumber);
-          dayDiv.appendChild(note);
-          dayDiv.appendChild(saveBtn);
-          calendar.appendChild(dayDiv);
+        if (date.toDateString() === today) {
+          dayDiv.classList.add('today');
         }
-      }
 
-      function filterByMonth() {
-        const selectedMonth = monthSelect.value;
-        const allDays = document.querySelectorAll('.day');
-        allDays.forEach(day => {
-          if (selectedMonth === 'all') {
-            day.style.display = 'block';
-          } else {
-            day.style.display = day.getAttribute('data-month') === selectedMonth ? 'block' : 'none';
+        const dayNumber = document.createElement('div');
+        dayNumber.className = 'day-number';
+        dayNumber.textContent = date.toDateString();
+
+        const note = document.createElement('textarea');
+        const savedNote = localStorage.getItem(`note-${year}-${day}`);
+        if (savedNote) note.value = savedNote;
+
+        const savedHighlight = localStorage.getItem(`highlight-${year}-${day}`);
+        if (savedHighlight) dayDiv.classList.add(`highlight-${savedHighlight}`);
+
+        note.addEventListener('click', (e) => e.stopPropagation());
+
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = 'Save';
+        saveBtn.className = 'save-btn';
+        saveBtn.addEventListener('click', (event) => {
+          event.stopPropagation();
+          localStorage.setItem(`note-${year}-${day}`, note.value);
+        });
+
+        dayDiv.addEventListener('click', (e) => {
+          if (e.target.tagName !== 'TEXTAREA' && !e.target.classList.contains('save-btn') && currentHighlight) {
+            dayDiv.classList.remove('highlight-hr', 'highlight-marketing', 'highlight-innovation');
+            dayDiv.classList.add(`highlight-${currentHighlight}`);
+            localStorage.setItem(`highlight-${year}-${day}`, currentHighlight);
           }
         });
-      }
 
-      function clearAllNotes() {
-        if (confirm('Are you sure you want to delete all saved notes?')) {
-          const keysToDelete = [];
-          for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key.startsWith('note-') || key.startsWith('highlight-')) {
-              keysToDelete.push(key);
-            }
-          }
-          keysToDelete.forEach(key => localStorage.removeItem(key));
-          window.location.reload();
+        dayDiv.appendChild(dayNumber);
+        dayDiv.appendChild(note);
+        dayDiv.appendChild(saveBtn);
+        calendar.appendChild(dayDiv);
+      }
+    }
+
+    function filterByMonth() {
+      const selectedMonth = monthSelect.value;
+      const allDays = document.querySelectorAll('.day');
+      allDays.forEach(day => {
+        if (selectedMonth === 'all') {
+          day.style.display = 'block';
+        } else {
+          day.style.display = day.getAttribute('data-month') === selectedMonth ? 'block' : 'none';
         }
-      }
+      });
+    }
 
-      function downloadNotes() {
-        let notesData = '';
+    function clearAllNotes() {
+      if (confirm('Are you sure you want to delete all saved notes?')) {
+        const keysToDelete = [];
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          if (key.startsWith('note-')) {
-            notesData += `${key}: ${localStorage.getItem(key)}\n`;
+          if (key.startsWith('note-') || key.startsWith('highlight-')) {
+            keysToDelete.push(key);
           }
         }
-        const blob = new Blob([notesData], { type: 'text/plain' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = 'calendar-notes.txt';
-        link.click();
+        keysToDelete.forEach(key => localStorage.removeItem(key));
+        window.location.reload();
       }
+    }
 
-      function setHighlight(color) {
-        currentHighlight = color;
+    function downloadNotes() {
+      let notesData = '';
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key.startsWith('note-')) {
+          notesData += `${key}: ${localStorage.getItem(key)}\n`;
+        }
       }
+      const blob = new Blob([notesData], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'calendar-notes.txt';
+      link.click();
+    }
 
-      generateCalendar(currentYear);
-    });
+    function setHighlight(color) {
+      currentHighlight = color;
+    }
+
+    generateCalendar(currentYear);
   </script>
 </body>
 </html>
